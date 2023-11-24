@@ -13,4 +13,4 @@ def process_request():
     return jsonify(response)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=7001)
+    app.run(host='0.0.0.0', port=7001, debug=True)
