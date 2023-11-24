@@ -1,0 +1,8 @@
+# Use the Apache server image based on Alpine
+FROM httpd:2.4-alpine
+
+# Copy the HTML file into the htdocs directory of Apache
+COPY index.html /usr/local/apache2/htdocs/
+
+# The default port for Apache is 80
+EXPOSE 80
