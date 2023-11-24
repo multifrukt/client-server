@@ -2,3 +2,16 @@ FROM alpine:latest
 
 # Install necessary packages
 RUN apk add --no-cache nodejs npm
+
+# Copy your application files
+COPY . /app
+WORKDIR /app
+
+# Install Node.js dependencies
+RUN npm install
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Start the application
+CMD ["node", "server.js"]
