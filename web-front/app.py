@@ -29,6 +29,9 @@ def form_submit():
         <body>
             <p>API Response:</p>
             <h1>{{ message }}</h1>
+            <p>
+                <button onclick="window.history.back();">Return to the form</button>
+            </p>
         </body>
         </html>
     """, message=response_data.get("message"))
