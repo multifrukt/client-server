@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  apiserver:
+    build: ./apiserver
+    networks:
+      - backend
+
+  web-front:
+    build: ./web-front
+    ports:
+      - "80:80"
+    networks:
+      - backend
+    depends_on:
+      - apiserver
+
+networks:
+  backend:
