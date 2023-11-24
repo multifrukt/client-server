@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 # URL of the external API (configurable)
-API_URL = "http://ubuntu:7001"
+API_URL = "http://apiserver:7001"
 
 @app.route('/form_submit', methods=['POST'])
 def form_submit():
