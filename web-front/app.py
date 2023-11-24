@@ -30,7 +30,7 @@ def form_submit():
             <p>API Response:</p>
             <h1>{{ message }}</h1>
             <p>
-                <button onclick="window.history.back();">Return to the form</button>
+                <button onclick="window.history.back();">Back to the form</button>
             </p>
         </body>
         </html>
