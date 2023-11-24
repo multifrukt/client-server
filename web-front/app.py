@@ -27,8 +27,8 @@ def form_submit():
             <title>API Response</title>
         </head>
         <body>
-            <h1>API Response</h1>
-            <p>{{ message }}</p>
+            <p>API Response:</p>
+            <h1>{{ message }}</h1>
         </body>
         </html>
     """, message=response_data.get("message"))
