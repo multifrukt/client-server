@@ -1,8 +1,29 @@
-# Use the Apache server image based on Alpine
-FROM httpd:2.4-alpine
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
 
-# Copy the HTML file into the htdocs directory of Apache
-COPY index.html /usr/local/apache2/htdocs/
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-# The default port for Apache is 80
+# Copy the current directory contents into the container
+COPY . .
+
+# Install Nginx
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy Nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Install any needed packages specified in requirements.txt
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make port 80 available to the world outside this container
 EXPOSE 80
+
+# Define environment variable
+ENV NAME World
+
+# Run Nginx and the Flask app when the container launches
+CMD service nginx start && python3 app.py
