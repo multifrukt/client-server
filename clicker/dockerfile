@@ -11,7 +11,7 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Define environment variable
-ENV URL_TO_CLICK="http://web-front/"
+ENV URL_TO_CLICK="http://webfront/"
 ENV PYTHONUNBUFFERED=1
 
 # Run clicker.py when the container launches

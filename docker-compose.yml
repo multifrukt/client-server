@@ -6,8 +6,8 @@ services:
     networks:
       - backend-network
 
-  web-front:
-    build: ./web-front
+  webfront:
+    build: webfront
     ports:
       - "80:80"
     networks:
@@ -21,7 +21,7 @@ services:
     networks:
       - client-network
     depends_on:
-      - web-front
+      - webfront
 
 networks:
   backend-network:
