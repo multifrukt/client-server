@@ -38,3 +38,7 @@ curl -X POST http://ubuntu:7001/ \
     -H "Content-Type: application/json" \
     -d '{"name": "Alice", "profession": "Doctor"}'
 ```
+
+## clicker
+
+Opens `web-front` page, finds submit button, sends example request to the page responsible for the form action. Repeats after configurable interval
