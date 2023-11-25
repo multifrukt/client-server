@@ -15,6 +15,7 @@ EXPOSE 7001
 
 # Define environment variable
 ENV NAME World
+ENV PYTHONUNBUFFERED=1
 
 # Run apiserver.py when the container launches
 CMD ["python", "./apiserver.py"]
