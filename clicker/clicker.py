@@ -2,6 +2,7 @@ import os
 import time
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 RETRY_INTERVAL = 5  # Seconds to wait between retries
 
@@ -32,7 +33,8 @@ def submit_form(url):
             break
 
         except requests.exceptions.RequestException as e:
-            print(f"Connection to web-front failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
+            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print(f"[{current_time}] Connection to web-front at {url} failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
             time.sleep(RETRY_INTERVAL)
 
 def main():

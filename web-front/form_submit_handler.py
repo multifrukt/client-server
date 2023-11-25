@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template_string
 import requests
 import time
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -39,7 +40,8 @@ def form_submit():
             """, message=response_data.get("message"))
 
         except requests.exceptions.RequestException as e:
-            print(f"Connection to apiserver failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
+            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print(f"[{current_time}] Connection to apiserver at {API_URL} failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
             time.sleep(RETRY_INTERVAL)
 
 if __name__ == '__main__':
