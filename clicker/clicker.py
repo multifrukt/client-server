@@ -3,36 +3,42 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
-# Replace 'field1_name', 'field2_name' with the actual names of the HTML fields
+RETRY_INTERVAL = 5  # Seconds to wait between retries
+
 def submit_form(url):
-    session = requests.Session()
-    response = session.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
+    while True:
+        try:
+            session = requests.Session()
+            response = session.get(url)
+            soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Assuming the fields are input fields, you might need to adjust this for different HTML structures
-    payload = {
-        'name': 'Alice',
-        'profession': 'Doctor'
-    }
+            payload = {
+                'name': 'Alice',
+                'profession': 'Doctor'
+            }
 
-    # Replace 'form_id_or_name' with the actual ID or name of the form
-    form = soup.find('form', {'id': 'form1'})
-    submit_url = url + form['action']
-    print("Clicking form at URL: " + submit_url)
+            form = soup.find('form', {'id': 'form1'})
+            submit_url = url + form['action']
+            print("Clicking form at URL: " + submit_url)
 
-    response = session.post(submit_url, data=payload)
+            response = session.post(submit_url, data=payload)
 
-    if "API Response" in response.text:
-        print("API Response received:" + response.text)
-    else:
-        print("API Response not found")
+            if "API Response" in response.text:
+                print("API Response received:" + response.text)
+            else:
+                print("API Response not found")
 
-    session.close()
+            session.close()
+            break
+
+        except requests.exceptions.RequestException as e:
+            print(f"Connection to web-front failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
+            time.sleep(RETRY_INTERVAL)
 
 def main():
     env_var = 'URL_TO_CLICK'
     url = os.environ.get(env_var)
-    print("Got URL from " + env_var + " env variable: " + url)
+    print(f"Got URL from {env_var} env variable: {url}")
 
     while True:
         submit_form(url)
