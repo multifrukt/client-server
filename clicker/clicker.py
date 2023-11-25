@@ -6,6 +6,9 @@ from datetime import datetime
 
 RETRY_INTERVAL = 5  # Seconds to wait between retries
 
+def get_current_time():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 def submit_form(url):
     while True:
         try:
@@ -20,21 +23,20 @@ def submit_form(url):
 
             form = soup.find('form', {'id': 'form1'})
             submit_url = url + form['action']
-            print("Clicking form at URL: " + submit_url)
+            print(f"[{get_current_time()}] Clicking form at URL: " + submit_url)
 
             response = session.post(submit_url, data=payload)
 
             if "API Response" in response.text:
-                print("API Response received:" + response.text)
+                print(f"[{get_current_time()}] API Response received:" + response.text)
             else:
-                print("API Response not found")
+                print(f"[{get_current_time()}] API Response not found")
 
             session.close()
             break
 
         except requests.exceptions.RequestException as e:
-            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            print(f"[{current_time}] Connection to web-front at {url} failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
+            print(f"[{get_current_time()}] Connection to web-front at {url} failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
             time.sleep(RETRY_INTERVAL)
 
 def main():
