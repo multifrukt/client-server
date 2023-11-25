@@ -41,4 +41,4 @@ curl -X POST http://ubuntu:7001/ \
 
 ## clicker
 
-Opens `web-front` page, finds submit button, sends example request to the page responsible for the form action. Repeats after configurable interval
+Opens `web-front` `/` page, finds submit button, sends example request to the page responsible for the form action. Repeats after configurable interval
