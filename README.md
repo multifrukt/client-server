@@ -30,3 +30,11 @@ Response example:
     "message": "Alice is a cool Doctor"
 }
 ```
+
+Curl for testing:
+
+```bash
+curl -X POST http://ubuntu:7001/ \
+    -H "Content-Type: application/json" \
+    -d '{"name": "Alice", "profession": "Doctor"}'
+```
