@@ -4,25 +4,25 @@ services:
   apiserver:
     build: ./apiserver
     networks:
-      - backend
+      - backend-network
 
   web-front:
     build: ./web-front
     ports:
       - "80:80"
     networks:
-      - backend
-      - client
+      - backend-network
+      - client-network
     depends_on:
       - apiserver
 
   clicker:
     build: ./clicker
     networks:
-      - client
+      - client-network
     depends_on:
       - web-front
 
 networks:
-  backend:
-  client:
+  backend-network:
+  client-network:
