@@ -1,10 +1,10 @@
 # client-server
 
-## web-front `/`
+## webfront `/`
 
 Offers to fill a form. Submits form to `/form_submit`
 
-## web-front `/form_submit`
+## webfront `/form_submit`
 
 Receives form data. Sends data as JSON to API provided by `apiserver`. Receives JSON response, extracts message from it and displays on the web page
 
@@ -34,11 +34,11 @@ Response example:
 Curl for testing:
 
 ```bash
-curl -X POST http://ubuntu:7001/ \
+curl -X POST http://apiserver:7001/ \
     -H "Content-Type: application/json" \
     -d '{"name": "Alice", "profession": "Doctor"}'
 ```
 
 ## clicker
 
-Opens `web-front` `/` page, finds submit button, sends example request to the page responsible for the form action. Repeats after configurable interval
+Opens `webfront` `/` page, finds submit button, sends example request to the page responsible for the form action. Repeats after configurable interval
