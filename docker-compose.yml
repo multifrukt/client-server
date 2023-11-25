@@ -15,5 +15,12 @@ services:
     depends_on:
       - apiserver
 
+  clicker:
+    build: ./clicker
+    networks:
+      - backend
+    depends_on:
+      - web-front
+
 networks:
   backend:

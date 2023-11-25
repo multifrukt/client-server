@@ -30,7 +30,7 @@ def submit_form(url):
     session.close()
 
 def main():
-    env_var = 'CLICKER_URL'
+    env_var = 'URL_TO_CLICK'
     url = os.environ.get(env_var)
     print("Got URL from " + env_var + " env variable: " + url)
 
