@@ -13,7 +13,7 @@ def process_request():
     profession = data.get('profession', 'profession')
 
     response = {"message": f"{name} is a cool {profession}"}
-    print("API server is sending JSON response:", response)  # Debug print for sent JSON
+    print("API server is Sending JSON response:", response)  # Debug print for sent JSON
 
     return jsonify(response)
 
