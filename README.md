@@ -1,4 +1,4 @@
-# client-server
+# client-server-clicker
 
 Application consists of 3 containers:
 
