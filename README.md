@@ -1,5 +1,11 @@
 # client-server
 
+Application consists of 3 containers:
+
+- Web server `webfront`
+- Backend server `apiserver`
+- Container emulating user interaction with web server `clicker`
+
 ## webfront `/`
 
 Offers to fill a form. Submits form to `/form_submit`
