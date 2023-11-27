@@ -2,9 +2,9 @@
 
 Application consists of 3 containers:
 
-- Web server `webfront`
-- Backend server `apiserver`
-- Container emulating user interaction with web server `clicker`
+- Web server: `webfront`
+- Backend server: `apiserver`
+- Container, emulating user interaction with web server: `clicker`
 
 ## webfront `/`
 
