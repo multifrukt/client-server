@@ -8,8 +8,10 @@ app = Flask(__name__)
 # URL of the external API
 API_URL = "http://apiserver:7001"
 
+
 def get_current_time():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
 @app.route('/form_submit', methods=['POST'])
 def form_submit():
@@ -43,8 +45,10 @@ def form_submit():
             """, message=response_data.get("message"))
 
         except requests.exceptions.RequestException as e:
-            print(f"[{get_current_time()}] Connection to apiserver at {API_URL} failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
+            print(
+                f"[{get_current_time()}] Connection to apiserver at {API_URL} failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
             time.sleep(RETRY_INTERVAL)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

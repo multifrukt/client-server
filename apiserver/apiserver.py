@@ -5,8 +5,10 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)  # This will enable CORS for all routes
 
+
 def get_current_time():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
 @app.route('/', methods=['POST'])
 def process_request():
@@ -20,6 +22,7 @@ def process_request():
     print(f"[{get_current_time()}] API server is Sending JSON response:", response)  # Debug print for sent JSON
 
     return jsonify(response)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=7001, debug=True)
