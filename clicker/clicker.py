@@ -17,12 +17,10 @@ def main():
     url_to_click = os.environ.get(ENV_VAR_URL_TO_CLICK)
     print(f"Got Environment variable {ENV_VAR_URL_TO_CLICK}: {url_to_click}")
 
-    retry_on_success_interval = float(
-        os.environ.get(ENV_VAR_RETRY_ON_SUCCESS_INTERVAL))  # Seconds
+    retry_on_success_interval = float(os.environ.get(ENV_VAR_RETRY_ON_SUCCESS_INTERVAL))  # Seconds
     print(f"Got Environment variable {ENV_VAR_RETRY_ON_SUCCESS_INTERVAL}: {retry_on_success_interval}")
 
-    retry_on_failure_interval = float(
-        os.environ.get(ENV_VAR_RETRY_ON_FAILURE_INTERVAL))  # Seconds
+    retry_on_failure_interval = float(os.environ.get(ENV_VAR_RETRY_ON_FAILURE_INTERVAL))  # Seconds
     print(f"Got Environment variable {ENV_VAR_RETRY_ON_FAILURE_INTERVAL}: {retry_on_failure_interval}")
 
     while True:
@@ -49,15 +47,13 @@ def main():
 
             session.close()
 
-            print(
-                f"[{timestamp()}] Connection to web-front at {url_to_click} succeeded."
-                f" Retrying in {retry_on_success_interval} seconds...")
+            print(f"[{timestamp()}] Connection to web-front at {url_to_click} succeeded."
+                  f" Retrying in {retry_on_success_interval} seconds...")
             time.sleep(retry_on_success_interval)
 
         except requests.exceptions.RequestException as e:
-            print(
-                f"[{timestamp()}] Connection to web-front at {url_to_click} failed: {e}."
-                f" Retrying in {retry_on_failure_interval} seconds...")
+            print(f"[{timestamp()}] Connection to web-front at {url_to_click} failed: {e}."
+                  f" Retrying in {retry_on_failure_interval} seconds...")
             time.sleep(retry_on_failure_interval)
 
 
