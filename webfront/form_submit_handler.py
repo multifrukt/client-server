@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template_string
 import os
-import time
 import requests
 from datetime import datetime
 
@@ -22,36 +21,32 @@ def form_submit():
     form_data = request.form
     json_data = form_data.to_dict()
 
-    RETRY_INTERVAL = 5  # Seconds to wait between retries
+    try:
+        # Send JSON data to the external API
+        response = requests.post(api_url, json=json_data)
+        response_data = response.json()
 
-    while True:
-        try:
-            # Send JSON data to the external API
-            response = requests.post(api_url, json=json_data)
-            response_data = response.json()
+        # Display the API's response
+        return render_template_string("""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>API Response</title>
+            </head>
+            <body>
+                <p>API Response:</p>
+                <h1>{{ message }}</h1>
+                <p>
+                    <button onclick="window.history.back();">Back to the form</button>
+                </p>
+            </body>
+            </html>
+        """, message=response_data.get("message"))
 
-            # Display the API's response
-            return render_template_string("""
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>API Response</title>
-                </head>
-                <body>
-                    <p>API Response:</p>
-                    <h1>{{ message }}</h1>
-                    <p>
-                        <button onclick="window.history.back();">Back to the form</button>
-                    </p>
-                </body>
-                </html>
-            """, message=response_data.get("message"))
-
-        except requests.exceptions.RequestException as e:
-            print(
-                f"[{get_current_time()}] Connection to apiserver at {api_url} failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
-            time.sleep(RETRY_INTERVAL)
+    except requests.exceptions.RequestException as e:
+        print(
+            f"[{get_current_time()}] Connection to apiserver at {api_url} failed: {e}")
 
 
 if __name__ == '__main__':
