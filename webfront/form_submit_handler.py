@@ -9,7 +9,7 @@ app = Flask(__name__)
 ENV_VAR_API_URL = 'API_URL'
 
 
-def get_current_time():
+def timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
@@ -46,7 +46,7 @@ def form_submit():
 
     except requests.exceptions.RequestException as e:
         print(
-            f"[{get_current_time()}] Connection to apiserver at {api_url} failed: {e}")
+            f"[{timestamp()}] Connection to apiserver at {api_url} failed: {e}")
 
 
 if __name__ == '__main__':
