@@ -9,7 +9,7 @@ ENV_VAR_RETRY_ON_SUCCESS_INTERVAL = 'RETRY_ON_SUCCESS_INTERVAL'
 ENV_VAR_RETRY_ON_FAILURE_INTERVAL = 'RETRY_ON_FAILURE_INTERVAL'
 
 
-def get_current_time():
+def timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
@@ -38,25 +38,25 @@ def main():
 
             form = soup.find('form', {'id': 'form1'})
             submit_url = url_to_click + form['action']
-            print(f"[{get_current_time()}] Clicking form at URL: " + submit_url)
+            print(f"[{timestamp()}] Clicking form at URL: " + submit_url)
 
             response = session.post(submit_url, data=payload)
 
             if "API Response" in response.text:
-                print(f"[{get_current_time()}] API Response received:" + response.text)
+                print(f"[{timestamp()}] API Response received:" + response.text)
             else:
-                print(f"[{get_current_time()}] API Response not found")
+                print(f"[{timestamp()}] API Response not found")
 
             session.close()
 
             print(
-                f"[{get_current_time()}] Connection to web-front at {url_to_click} succeeded."
+                f"[{timestamp()}] Connection to web-front at {url_to_click} succeeded."
                 f" Retrying in {retry_on_success_interval} seconds...")
             time.sleep(retry_on_success_interval)
 
         except requests.exceptions.RequestException as e:
             print(
-                f"[{get_current_time()}] Connection to web-front at {url_to_click} failed: {e}."
+                f"[{timestamp()}] Connection to web-front at {url_to_click} failed: {e}."
                 f" Retrying in {retry_on_failure_interval} seconds...")
             time.sleep(retry_on_failure_interval)
 
