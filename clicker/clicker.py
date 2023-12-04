@@ -71,7 +71,7 @@ def main():
             tries_per_second = tries_per_minute / 60
             tries_statistics = (f"Tries per minute: {tries_per_minute:.2f}\n"
                                 f"Tries per second: {tries_per_second:.2f}\n"
-                                f"Note: Statistics refresh every 1 minute")
+                                f"Note: Statistics refresh every 1 minute. Last refresh was: [{timestamp()}]")
 
             # Reset counters and timestamp
             total_count = 0
@@ -80,7 +80,7 @@ def main():
         if tries_statistics:
             print(tries_statistics)
         else:
-            print("Statistics are being collected and will be available after the first minute elapses.")
+            print(f"[{timestamp()}] Statistics are being collected and will be available after the first minute elapses.")
 
 
 if __name__ == '__main__':
