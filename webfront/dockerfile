@@ -23,7 +23,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 80
 
 # Define environment variable
-ENV NAME World
 ENV PYTHONUNBUFFERED=1
 
 # Run Nginx and the Flask app when the container launches
