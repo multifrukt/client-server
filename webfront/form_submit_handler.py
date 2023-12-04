@@ -7,6 +7,8 @@ app = Flask(__name__)
 
 # URL of the external API
 ENV_VAR_API_URL = 'API_URL'
+api_url = os.environ.get(ENV_VAR_API_URL)  # Read the environment variable once
+print(f"Got Environment variable {ENV_VAR_API_URL}: {api_url}")
 
 
 def timestamp():
@@ -15,9 +17,6 @@ def timestamp():
 
 @app.route('/form_submit', methods=['POST'])
 def form_submit():
-    api_url = os.environ.get(ENV_VAR_API_URL)
-    print(f"Got Environment variable {ENV_VAR_API_URL}: {api_url}")
-
     form_data = request.form
     json_data = form_data.to_dict()
 
