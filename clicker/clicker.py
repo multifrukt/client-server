@@ -4,18 +4,31 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-RETRY_ON_FAILURE_INTERVAL = 5  # Seconds to wait between retries
+ENV_VAR_URL_TO_CLICK = 'URL_TO_CLICK'
+ENV_VAR_RETRY_ON_SUCCESS_INTERVAL = 'RETRY_ON_SUCCESS_INTERVAL'
+ENV_VAR_RETRY_ON_FAILURE_INTERVAL = 'RETRY_ON_FAILURE_INTERVAL'
 
 
 def get_current_time():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-def submit_form(url, retry_on_success_interval):
+def submit_form():
+    url_to_click = os.environ.get(ENV_VAR_URL_TO_CLICK)
+    print(f"Got Environment variable {ENV_VAR_URL_TO_CLICK}: {url_to_click}")
+
+    retry_on_success_interval = float(
+        os.environ.get(ENV_VAR_RETRY_ON_SUCCESS_INTERVAL))  # Seconds
+    print(f"Got Environment variable {ENV_VAR_RETRY_ON_SUCCESS_INTERVAL}: {retry_on_success_interval}")
+
+    retry_on_failure_interval = float(
+        os.environ.get(ENV_VAR_RETRY_ON_FAILURE_INTERVAL))  # Seconds
+    print(f"Got Environment variable {ENV_VAR_RETRY_ON_FAILURE_INTERVAL}: {retry_on_failure_interval}")
+
     while True:
         try:
             session = requests.Session()
-            response = session.get(url)
+            response = session.get(url_to_click)
             soup = BeautifulSoup(response.text, 'html.parser')
 
             payload = {
@@ -24,7 +37,7 @@ def submit_form(url, retry_on_success_interval):
             }
 
             form = soup.find('form', {'id': 'form1'})
-            submit_url = url + form['action']
+            submit_url = url_to_click + form['action']
             print(f"[{get_current_time()}] Clicking form at URL: " + submit_url)
 
             response = session.post(submit_url, data=payload)
@@ -37,26 +50,19 @@ def submit_form(url, retry_on_success_interval):
             session.close()
 
             print(
-                f"[{get_current_time()}] Connection to web-front at {url} succeeded. Retrying in {retry_on_success_interval} seconds...")
+                f"[{get_current_time()}] Connection to web-front at {url_to_click} succeeded."
+                f" Retrying in {retry_on_success_interval} seconds...")
             time.sleep(retry_on_success_interval)
 
         except requests.exceptions.RequestException as e:
             print(
-                f"[{get_current_time()}] Connection to web-front at {url} failed: {e}. Retrying in {RETRY_ON_FAILURE_INTERVAL} seconds...")
-            time.sleep(RETRY_ON_FAILURE_INTERVAL)
+                f"[{get_current_time()}] Connection to web-front at {url_to_click} failed: {e}."
+                f" Retrying in {retry_on_failure_interval} seconds...")
+            time.sleep(retry_on_failure_interval)
 
 
 def main():
-    env_var_url = 'URL_TO_CLICK'
-    url = os.environ.get(env_var_url)
-    print(f"Got URL from {env_var_url} env variable: {url}")
-
-    env_var_retry_on_success_interval = 'RETRY_ON_SUCCESS_INTERVAL'
-    retry_on_success_interval = float(
-        os.environ.get(env_var_retry_on_success_interval))  # Seconds to wait between retries
-    print(f"Got Retry Interval from {env_var_retry_on_success_interval} env variable: {retry_on_success_interval}")
-
-    submit_form(url, retry_on_success_interval)
+    submit_form()
 
 
 if __name__ == '__main__':
