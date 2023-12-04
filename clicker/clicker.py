@@ -23,7 +23,14 @@ def main():
     retry_on_failure_interval = float(os.environ.get(ENV_VAR_RETRY_ON_FAILURE_INTERVAL))  # Seconds
     print(f"Got Environment variable {ENV_VAR_RETRY_ON_FAILURE_INTERVAL}: {retry_on_failure_interval}")
 
+    # Initialize counters and timers
+    total_count = 0
+    last_log_time = time.time()
+    tries_statistics = ""
+
     while True:
+        total_count += 1
+
         try:
             session = requests.Session()
             response = session.get(url_to_click)
@@ -55,6 +62,25 @@ def main():
             print(f"[{timestamp()}] Connection to web-front at {url_to_click} failed: {e}."
                   f" Retrying in {retry_on_failure_interval} seconds...")
             time.sleep(retry_on_failure_interval)
+
+        # Calculate statistics
+        current_time = time.time()
+        if current_time - last_log_time >= 60:
+            minutes_elapsed = (current_time - last_log_time) / 60
+            tries_per_minute = total_count / minutes_elapsed
+            tries_per_second = tries_per_minute / 60
+            tries_statistics = (f"Tries per minute: {tries_per_minute:.2f}\n"
+                                f"Tries per second: {tries_per_second:.2f}\n"
+                                f"Note: Statistics refresh every 1 minute")
+
+            # Reset counters and timestamp
+            total_count = 0
+            last_log_time = current_time
+
+        if tries_statistics:
+            print(tries_statistics)
+        else:
+            print("Statistics are being collected and will be available after the first minute elapses.")
 
 
 if __name__ == '__main__':
