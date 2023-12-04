@@ -44,8 +44,26 @@ def form_submit():
         """, message=response_data.get("message"))
 
     except requests.exceptions.RequestException as e:
-        print(
-            f"[{timestamp()}] Connection to apiserver at {api_url} failed: {e}")
+        error_message = f"[{timestamp()}] Connection to apiserver at {api_url} failed: {e}"
+        print(error_message)
+
+        # Display the error on the web page
+        return render_template_string("""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Error</title>
+            </head>
+            <body>
+                <p>Error:</p>
+                <p style="color:red;">{{ message }}</p>
+                <p>
+                    <button onclick="window.history.back();">Back to the form</button>
+                </p>
+            </body>
+            </html>
+        """, message=error_message)
 
 
 if __name__ == '__main__':
