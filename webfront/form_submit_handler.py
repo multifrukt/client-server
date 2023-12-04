@@ -1,12 +1,13 @@
 from flask import Flask, request, render_template_string
-import requests
+import os
 import time
+import requests
 from datetime import datetime
 
 app = Flask(__name__)
 
 # URL of the external API
-API_URL = "http://apiserver:7001"
+ENV_VAR_API_URL = 'API_URL'
 
 
 def get_current_time():
@@ -15,6 +16,9 @@ def get_current_time():
 
 @app.route('/form_submit', methods=['POST'])
 def form_submit():
+    api_url = os.environ.get(ENV_VAR_API_URL)
+    print(f"Got Environment variable {ENV_VAR_API_URL}: {api_url}")
+
     form_data = request.form
     json_data = form_data.to_dict()
 
@@ -23,7 +27,7 @@ def form_submit():
     while True:
         try:
             # Send JSON data to the external API
-            response = requests.post(API_URL, json=json_data)
+            response = requests.post(api_url, json=json_data)
             response_data = response.json()
 
             # Display the API's response
@@ -46,7 +50,7 @@ def form_submit():
 
         except requests.exceptions.RequestException as e:
             print(
-                f"[{get_current_time()}] Connection to apiserver at {API_URL} failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
+                f"[{get_current_time()}] Connection to apiserver at {api_url} failed: {e}. Retrying in {RETRY_INTERVAL} seconds...")
             time.sleep(RETRY_INTERVAL)
 
 
