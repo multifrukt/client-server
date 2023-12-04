@@ -13,7 +13,7 @@ def get_current_time():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-def submit_form():
+def main():
     url_to_click = os.environ.get(ENV_VAR_URL_TO_CLICK)
     print(f"Got Environment variable {ENV_VAR_URL_TO_CLICK}: {url_to_click}")
 
@@ -59,10 +59,6 @@ def submit_form():
                 f"[{get_current_time()}] Connection to web-front at {url_to_click} failed: {e}."
                 f" Retrying in {retry_on_failure_interval} seconds...")
             time.sleep(retry_on_failure_interval)
-
-
-def main():
-    submit_form()
 
 
 if __name__ == '__main__':
