@@ -14,6 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV URL_TO_CLICK="http://webfront/"
 ENV RETRY_ON_SUCCESS_INTERVAL=1.0
 ENV RETRY_ON_FAILURE_INTERVAL=5.0
+ENV REQUEST_TIMEOUT=10
 ENV PYTHONUNBUFFERED=1
 
 # Run clicker.py when the container launches

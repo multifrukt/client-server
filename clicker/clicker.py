@@ -7,6 +7,7 @@ from datetime import datetime
 ENV_VAR_URL_TO_CLICK = 'URL_TO_CLICK'
 ENV_VAR_RETRY_ON_SUCCESS_INTERVAL = 'RETRY_ON_SUCCESS_INTERVAL'
 ENV_VAR_RETRY_ON_FAILURE_INTERVAL = 'RETRY_ON_FAILURE_INTERVAL'
+ENV_VAR_REQUEST_TIMEOUT = 'REQUEST_TIMEOUT'
 
 
 def timestamp():
@@ -23,6 +24,9 @@ def main():
     retry_on_failure_interval = float(os.environ.get(ENV_VAR_RETRY_ON_FAILURE_INTERVAL))  # Seconds
     print(f"Got Environment variable {ENV_VAR_RETRY_ON_FAILURE_INTERVAL}: {retry_on_failure_interval}")
 
+    request_timeout = float(os.environ.get(ENV_VAR_REQUEST_TIMEOUT))  # Seconds
+    print(f"Got Environment variable {ENV_VAR_REQUEST_TIMEOUT}: {request_timeout}")
+
     # Initialize counters and timers
     total_count = 0
     last_log_time = time.time()
@@ -33,7 +37,8 @@ def main():
 
         try:
             session = requests.Session()
-            response = session.get(url_to_click)
+            print(f"[{timestamp()}] Trying to connect to {url_to_click} with timeout {request_timeout} seconds...")
+            response = session.get(url_to_click, timeout=request_timeout)
             soup = BeautifulSoup(response.text, 'html.parser')
 
             payload = {
@@ -43,9 +48,10 @@ def main():
 
             form = soup.find('form', {'id': 'form1'})
             submit_url = url_to_click + form['action']
-            print(f"[{timestamp()}] Clicking form at URL: " + submit_url)
 
-            response = session.post(submit_url, data=payload)
+            print(
+                f"[{timestamp()}] Trying to submit form data to {submit_url} with timeout {request_timeout} seconds...")
+            response = session.post(submit_url, data=payload, timeout=request_timeout)
 
             if "API Response" in response.text:
                 print(f"[{timestamp()}] API Response received:" + response.text)
@@ -80,7 +86,8 @@ def main():
         if tries_statistics:
             print(tries_statistics)
         else:
-            print(f"[{timestamp()}] Statistics are being collected and will be available after the first minute elapses.")
+            print(
+                f"[{timestamp()}] Statistics are being collected and will be available after the first minute elapses.")
 
 
 if __name__ == '__main__':
